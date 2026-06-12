@@ -1,6 +1,6 @@
 # AI 활용 자유 주제 파이썬 미니 프로젝트
-# 이름 또는 학번: 
-# 프로젝트 주제: 
+# 이름 또는 학번: 20920 전서린
+# 프로젝트 주제: 학급 성적 및 맞춤형 피드백 관리기
 
 # ============================================================
 # 사용 안내
@@ -24,19 +24,17 @@
 # 자신의 주제에 맞게 data를 만드세요.
 #
 # 현재 열의 의미:
-# 0번 열: 활동 이름
-# 1번 열: 필요한 시간(분)
-# 2번 열: 추천 기분
-# 3번 열: 활동 유형
+# 0번 열: 학생 이름
+# 1번 열: 국어 점수
+# 2번 열: 수학 점수
+# 3번 열: 영어 점수
 # ------------------------------------------------------------
 
-activities = [
-    ["산책하기", 30, "피곤", "운동"],
-    ["짧은 낮잠", 20, "피곤", "휴식"],
-    ["좋아하는 음악 듣기", 10, "우울", "휴식"],
-    ["문제집 3쪽 풀기", 40, "차분", "공부"],
-    ["방 정리하기", 25, "답답", "생활"],
-    ["친구에게 연락하기", 15, "우울", "소통"],
+student_data = [
+    ["김철수", 80, 90, 85],
+    ["이영희", 95, 85, 100],
+    ["박민수", 50, 60, 55],
+    ["최윤아", 70, 75, 80]
 ]
 
 
@@ -44,58 +42,42 @@ activities = [
 # 2. 함수 정의
 # ------------------------------------------------------------
 
-def show_intro():
-    """프로그램 제목과 안내를 출력한다."""
-    print("=" * 40)
-    print("AI 활용 자유 주제 파이썬 미니 프로젝트")
-    print("예시: 기분과 시간에 따른 활동 추천기")
-    print("=" * 40)
+def add_student(students):
+    """
+    [함수 역할] 교사용 입력 기능으로, 새 학생의 이름과 점수를 입력받아 2차원 리스트에 저장합니다.
+    [입력값/매개변수] students : 학생 성적 데이터가 담긴 2차원 리스트
+    [출력값/반환값] 없음
+    """
+    print("\n[학생 추가]")
+    name = input("이름: ")
+    kor = int(input("국어 점수: "))
+    mat = int(input("수학 점수: "))
+    eng = int(input("영어 점수: "))
+    
+    students.append([name, kor, mat, eng])
+    print(f"{name} 학생이 추가되었습니다.")
 
 
-def get_user_input():
-    """사용자에게 기분과 남은 시간을 입력받는다."""
-    mood = input("현재 기분을 입력하세요. 예: 피곤, 우울, 차분, 답답: ")
-    minutes = int(input("사용 가능한 시간을 분 단위로 입력하세요: "))
-    return mood, minutes
-
-
-def find_recommendations(data, mood, minutes):
-    """2차원 리스트를 반복하며 조건에 맞는 활동을 찾는다."""
-    results = []
-
-    for row in data:
-        name = row[0]
-        required_minutes = row[1]
-        recommended_mood = row[2]
-        activity_type = row[3]
-
-        # 조건문: 사용자의 기분과 시간이 활동 조건에 맞는지 판단한다.
-        if recommended_mood == mood and required_minutes <= minutes:
-            results.append([name, required_minutes, activity_type])
-
-    return results
-
-
-def print_result(results):
-    """추천 결과를 출력한다."""
-    print("\n[추천 결과]")
-
-    if len(results) == 0:
-        print("조건에 맞는 활동이 없습니다.")
-        print("시간을 늘리거나 다른 기분을 입력해 보세요.")
-    else:
-        for item in results:
-            print(f"- {item[0]} / {item[1]}분 / 유형: {item[2]}")
-
-
-def main():
-    show_intro()
-    mood, minutes = get_user_input()
-    results = find_recommendations(activities, mood, minutes)
-    print_result(results)
-
-
+def print_score_table(students):
+    """
+    [함수 역할] 성적 통계 처리 기능으로, 전체 학생 성적표를 출력하고 학급 전체 평균을 계산합니다.
+    [입력값/매개변수] students : 학생 성적 데이터가 담긴 2차원 리스트
+    [출력값/반환값] 없음
+    """
+    print("\n[성적 일람표]")
+    print("이름\t국어\t수학\t영어\t총점\t평균")
+    
+    total_avg_sum = 0
+    for s in students:
+        total = s[1] + s[2] + s[3]
+        avg = total / 3
+        total_avg_sum += avg
+        print(f"{s[0]}\t{s[1]}\t{s[2]}\t{s[3]}\t{total}\t{avg:.1f}")
+        
+    class_avg = total_avg_sum / len(students)
+    print(f"▶ 학급 전체 평균: {class_avg:.1f}점")
 # ------------------------------------------------------------
 # 3. 프로그램 실행
 # ------------------------------------------------------------
-main()
+
+
