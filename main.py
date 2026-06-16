@@ -1,6 +1,6 @@
 # AI 활용 자유 주제 파이썬 미니 프로젝트
 # 이름 또는 학번: 20920 전서린
-# 프로젝트 주제: 학급 성적 및 맞춤형 피드백 관리기
+# 프로젝트 주제: 나만의 단어장 및 퀴즈 프로그램
 
 # ============================================================
 # 사용 안내
@@ -24,17 +24,15 @@
 # 자신의 주제에 맞게 data를 만드세요.
 #
 # 현재 열의 의미:
-# 0번 열: 학생 이름
-# 1번 열: 국어 점수
-# 2번 열: 수학 점수
-# 3번 열: 영어 점수
+# 0번 열: 영단어
+# 1번 열: 한국어 뜻
+# 2번 열: 맞힌 횟수
 # ------------------------------------------------------------
 
-student_data = [
-    ["김철수", 80, 90, 85],
-    ["이영희", 95, 85, 100],
-    ["박민수", 50, 60, 55],
-    ["최윤아", 70, 75, 80]
+word_list = [
+    ["apple", "사과", 0],
+    ["banana", "바나나", 0],
+    ["cherry", "체리", 0]
 ]
 
 
@@ -42,42 +40,45 @@ student_data = [
 # 2. 함수 정의
 # ------------------------------------------------------------
 
-def add_student(students):
-    """
-    [함수 역할] 교사용 입력 기능으로, 새 학생의 이름과 점수를 입력받아 2차원 리스트에 저장합니다.
-    [입력값/매개변수] students : 학생 성적 데이터가 담긴 2차원 리스트
-    [출력값/반환값] 없음
-    """
-    print("\n[학생 추가]")
-    name = input("이름: ")
-    kor = int(input("국어 점수: "))
-    mat = int(input("수학 점수: "))
-    eng = int(input("영어 점수: "))
-    
-    students.append([name, kor, mat, eng])
-    print(f"{name} 학생이 추가되었습니다.")
+def show_welcome():
+    print("=" * 30)
+    print("★ 영단어 마스터 프로그램 시작 ★")
+    print("=" * 30)
 
+def show_words(words):
+    print("\n[현재 나의 단어장 목록]")
+     
+    for word_info in words:
+        print(f"단어: {word_info[0]} | 뜻: {word_info[1]} | 맞힌 횟수: {word_info[2]}번")
 
-def print_score_table(students):
-    """
-    [함수 역할] 성적 통계 처리 기능으로, 전체 학생 성적표를 출력하고 학급 전체 평균을 계산합니다.
-    [입력값/매개변수] students : 학생 성적 데이터가 담긴 2차원 리스트
-    [출력값/반환값] 없음
-    """
-    print("\n[성적 일람표]")
-    print("이름\t국어\t수학\t영어\t총점\t평균")
+def run_quiz(words):
+    print("\n[영어 단어 퀴즈를 시작합니다]")
+    score = 0  
     
-    total_avg_sum = 0
-    for s in students:
-        total = s[1] + s[2] + s[3]
-        avg = total / 3
-        total_avg_sum += avg
-        print(f"{s[0]}\t{s[1]}\t{s[2]}\t{s[3]}\t{total}\t{avg:.1f}")
+    for word_info in words:
+        user_answer = input(f"'{word_info[0]}'의 뜻은 무엇일까요? : ")
         
-    class_avg = total_avg_sum / len(students)
-    print(f"▶ 학급 전체 평균: {class_avg:.1f}점")
+        if user_answer == word_info[1]:
+            print("정답입니다! 🎉")
+            score = score + 1
+            word_info[2] = word_info[2] + 1  
+        else:
+            print(f"틀렸습니다. 정답은 '{word_info[1]}'입니다.")
+            
+    return score 
 # ------------------------------------------------------------
 # 3. 프로그램 실행
 # ------------------------------------------------------------
 
+show_welcome()
+
+show_words(word_list)
+
+final_score = run_quiz(word_list)
+
+print("\n" + "=" * 30)
+print(f"💡 퀴즈 종료! 총 {final_score}문제를 맞혔습니다.")
+print("=" * 30)
+
+show_words(word_list)
 
